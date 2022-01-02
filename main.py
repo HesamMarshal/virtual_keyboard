@@ -1,4 +1,5 @@
 # cv2  version 4.5.3
+# mediapipe version 0.8.7
 # cvzone version 1.4.1 TODO: Upgrade to latest version
 # pynput v.1.7.3
 
@@ -61,29 +62,6 @@ def drawAll(img, buttonList):
     return img
 
 
-# def drawAll(img, buttonList):
-#     imgNew = np.zeros_like(img, np.uint8)
-#     for button in buttonList:
-#         x, y = button.pos
-#         cvzone.cornerRect(imgNew, (button.pos[0], button.pos[1], button.size[0], button.size[1]),
-#                           20, rt=0)
-#         cv2.rectangle(imgNew, button.pos, (x + button.size[0], y + button.size[1]),
-#                       (255, 0, 255), cv2.FILLED)
-#         cv2.putText(imgNew, button.text, (x + 40, y + 60),
-#                     cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 3)
-#
-#     out = img.copy()
-#     alpha = 0.7
-#     mask = imgNew.astype(bool)
-#     #print(mask.shape)
-#     out[mask] = cv2.addWeighted(img, alpha, imgNew, 1 - alpha, 0)[mask]
-#     return out
-
-
-
-
-
-
 class Button():
     def __init__(self,pos, text, size=[85,85]):
         self.pos = pos
@@ -91,7 +69,6 @@ class Button():
         self.size = size
 
     #def draw(self,img):
-
     #    return img
 
 # Draw numbers on the image
@@ -116,7 +93,7 @@ while True:
             w,h = button.size
 
 
-            # TODO : Add select font at up.
+
             if x < lmlist[8][0] <x+w and y < lmlist[8][1]<y+h:
                 cv2.rectangle(img, button.pos, (x + w, y + h), HOVER, cv2.FILLED)
                 cv2.putText(img, button.text, (x + 18, y + 70), FONT_FAMILY, 4, FONT_COLOR, 4)
@@ -127,7 +104,6 @@ while True:
                 if l < 20:
                     keyboard.press(button.text)
                     print(l)
-                    # TODO: Change Green to a meaning full Const
                     cv2.rectangle(img, button.pos, (x + w, y + h),KEY_DIVIDER , cv2.FILLED)
                     cv2.putText(img, button.text, (x + 18, y + 70), FONT_FAMILY, 4, FONT_COLOR, 4)
                     finalText += button.text
