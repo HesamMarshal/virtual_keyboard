@@ -92,16 +92,13 @@ while True:
             x,y = button.pos
             w,h = button.size
 
-
-
             if x < lmlist[8][0] <x+w and y < lmlist[8][1]<y+h:
                 cv2.rectangle(img, button.pos, (x + w, y + h), HOVER, cv2.FILLED)
                 cv2.putText(img, button.text, (x + 18, y + 70), FONT_FAMILY, 4, FONT_COLOR, 4)
                 l,_,_ = detecter.findDistance(8,12,img,draw=False)
 
-                # TODO: Make CLICK as Const and define it up the file
                 # clicked
-                if l < 20:
+                if l < CLICK_SIZE:
                     keyboard.press(button.text)
                     print(l)
                     cv2.rectangle(img, button.pos, (x + w, y + h),KEY_DIVIDER , cv2.FILLED)
@@ -111,7 +108,6 @@ while True:
 
     cv2.rectangle(img, (50,350), (600,450), HOVER, cv2.FILLED)
     cv2.putText(img, finalText, (60, 425), FONT_FAMILY, 4, FONT_COLOR, 4)
-
 
     #cv2.resize(img, dim, interpolation=cv2.INTER_AREA)  # (img, frameWidth, frameHeight)
     cv2.imshow("Image", img)
