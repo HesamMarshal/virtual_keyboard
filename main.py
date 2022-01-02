@@ -46,7 +46,7 @@ print(F"Height =  {cap.get(4)}")
 
 dim = (frame_width, frame_height)
 
-detecter = HandDetector(detectionCon=0.8)
+detector = HandDetector(detectionCon=0.8)
 keys = [["7","8","9"], ["4","5","6"],["1","2","3"]]
 finalText = ""
 
@@ -83,8 +83,8 @@ for x in range(0, 3):
 while True:
     success, img = cap.read()
     # to detect the hand and fingers
-    img = detecter.findHands(img)
-    lmlist, bboxInfo = detecter.findPosition(img)
+    img = detector.findHands(img)
+    lmlist, bboxInfo = detector.findPosition(img)
     img = drawAll(img,buttonList)
 
     if lmlist:
@@ -95,7 +95,7 @@ while True:
             if x < lmlist[8][0] <x+w and y < lmlist[8][1]<y+h:
                 cv2.rectangle(img, button.pos, (x + w, y + h), HOVER, cv2.FILLED)
                 cv2.putText(img, button.text, (x + 18, y + 70), FONT_FAMILY, 4, FONT_COLOR, 4)
-                l,_,_ = detecter.findDistance(8,12,img,draw=False)
+                l,_,_ = detector.findDistance(8,12,img,draw=False)
 
                 # clicked
                 if l < CLICK_SIZE:
