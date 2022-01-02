@@ -1,6 +1,6 @@
 # cv2  version 4.5.3
 # mediapipe version 0.8.7
-# cvzone version 1.4.1 TODO: Upgrade to latest version
+# cvzone version 1.5.3
 # pynput v.1.7.3
 
 import cv2  # version 4.5.3
@@ -36,7 +36,7 @@ FONT_FAMILY = cv2.FONT_HERSHEY_PLAIN
 KEY_COLOR = YELLOW
 HOVER = DARK_YELLOW
 KEY_DIVIDER = GREEN
-CLICK_SIZE = 20 # TODO : use it
+CLICK_SIZE = 20 
 
 cap = cv2.VideoCapture(IRIUN_WEBCAM)
 #cap.set(3, frame_width)    # width
