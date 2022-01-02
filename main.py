@@ -83,32 +83,34 @@ for x in range(0, 3):
 while True:
     success, img = cap.read()
     # to detect the hand and fingers
-    img = detector.findHands(img)
-    lmlist, bboxInfo = detector.findPosition(img)
-    img = drawAll(img,buttonList)
+    # Use this to flip image
+    hands, img = detector.findHands(img, flipType=False)
 
-    if lmlist:
-        for button in buttonList:
-            x,y = button.pos
-            w,h = button.size
+    img = drawAll(img, buttonList)
+    if hands:
+        lmList = hands[0]['lmList']
 
-            if x < lmlist[8][0] <x+w and y < lmlist[8][1]<y+h:
-                cv2.rectangle(img, button.pos, (x + w, y + h), HOVER, cv2.FILLED)
-                cv2.putText(img, button.text, (x + 18, y + 70), FONT_FAMILY, 4, FONT_COLOR, 4)
-                l,_,_ = detector.findDistance(8,12,img,draw=False)
+        if lmList:
+            for button in buttonList:
+                x,y = button.pos
+                w,h = button.size
 
-                # clicked
-                if l < CLICK_SIZE:
-                    keyboard.press(button.text)
-                    print(l)
-                    cv2.rectangle(img, button.pos, (x + w, y + h),KEY_DIVIDER , cv2.FILLED)
+                if x < lmList[8][0] <x+w and y < lmList[8][1] <y+h:
+                    cv2.rectangle(img, button.pos, (x + w, y + h), HOVER, cv2.FILLED)
                     cv2.putText(img, button.text, (x + 18, y + 70), FONT_FAMILY, 4, FONT_COLOR, 4)
-                    finalText += button.text
-                    sleep(0.5)
+                    length, info, img = detector.findDistance(lmList[8], lmList[12], img)
+
+                    # clicked
+                    if length < CLICK_SIZE:
+                        keyboard.press(button.text)
+                        print(length)
+                        cv2.rectangle(img, button.pos, (x + w, y + h),KEY_DIVIDER , cv2.FILLED)
+                        cv2.putText(img, button.text, (x + 18, y + 70), FONT_FAMILY, 4, FONT_COLOR, 4)
+                        finalText += button.text
+                        sleep(0.5)
 
     cv2.rectangle(img, (50,350), (600,450), HOVER, cv2.FILLED)
     cv2.putText(img, finalText, (60, 425), FONT_FAMILY, 4, FONT_COLOR, 4)
 
-    #cv2.resize(img, dim, interpolation=cv2.INTER_AREA)  # (img, frameWidth, frameHeight)
     cv2.imshow("Image", img)
     cv2.waitKey(1)
