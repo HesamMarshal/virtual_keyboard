@@ -109,7 +109,8 @@ while True:
                     if length < CLICK_SIZE:
                         # if an app (e.g. notepad) is open the numbers will typed in the app.
                         keyboard.press(button.text)
-                        print("Click Size= ",length)
+                        print(button.text ," & Click Size= ",length, )
+
                         cv2.rectangle(img, button.pos,
                                       (x + w, y + h), KEY_DIVIDER, cv2.FILLED)
                         cv2.putText(img, button.text, (x + 18, y + 70),
