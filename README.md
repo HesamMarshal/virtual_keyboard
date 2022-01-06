@@ -5,6 +5,7 @@
 
 ## TODO:
 * decide the size of click based the size of hand 
-    * e.g: when hand is near the webcam, the size is larger and the size of click is larger 
-    * e.g.: click = finger size /2 
+  * e.g: when hand is near the webcam, the size is larger and the size of click is larger 
+   e.g.: click = finger size /2 
+* change all Id's to pep8 nad snake_case
 

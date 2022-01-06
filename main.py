@@ -6,7 +6,6 @@
 import cv2  # version 4.5.3
 from cvzone.HandTrackingModule import HandDetector
 from time import sleep
-import numpy as np
 import cvzone
 from pynput.keyboard import Controller
 
@@ -14,7 +13,7 @@ print('cv2.version:', cv2.__version__)
 
 # CONSTS
 DEFAULT_WEBCAM = 0
-XPLIT_WEBCAM = 1
+XSPLIT_WEBCAM = 1
 IRIUN_WEBCAM = 2
 
 frame_width = 1280
@@ -51,16 +50,6 @@ finalText = ""
 keyboard = Controller()
 
 
-def drawAll(img, buttonList):
-    for button in buttonList:
-        x, y = button.pos
-        w, h = button.size
-        cvzone.cornerRect(img, (button.pos[0], button.pos[1], button.size[0], button.size[1]), 20, rt=0)
-        cv2.rectangle(img, button.pos, (x + w, y + h), KEY_COLOR, cv2.FILLED)
-        cv2.putText(img, button.text, (x + 18, y + 70), cv2.FONT_HERSHEY_PLAIN, 4, FONT_COLOR, 4)
-    return img
-
-
 class Button():
     def __init__(self, pos, text, size=[85, 85]):
         self.pos = pos
@@ -71,7 +60,7 @@ class Button():
     #    return img
 
 
-# Draw numbers on the image
+# Position of numbers on the image
 buttonList = []
 base_loc = 300
 for x in range(0, 3):
@@ -80,8 +69,21 @@ for x in range(0, 3):
     buttonList.append(Button([base_loc + x * 90 + 50, 200], keys[2][x]))
 
 
+def drawAll(img, buttonList):
+    for button in buttonList:
+        x, y = button.pos
+        w, h = button.size
+        cvzone.cornerRect(
+            img, (button.pos[0], button.pos[1], button.size[0], button.size[1]), 20, rt=0)
+        cv2.rectangle(img, button.pos, (x + w, y + h), KEY_COLOR, cv2.FILLED)
+        cv2.putText(img, button.text, (x + 18, y + 70),
+                    cv2.FONT_HERSHEY_PLAIN, 4, FONT_COLOR, 4)
+    return img
+
+
 while True:
     success, img = cap.read()
+
     # to detect the hand and fingers
     # Use this to flip image
     hands, img = detector.findHands(img, flipType=False)
@@ -94,21 +96,28 @@ while True:
             for button in buttonList:
                 x, y = button.pos
                 w, h = button.size
-
                 if x < lmList[8][0] < x+w and y < lmList[8][1] < y+h:
-                    cv2.rectangle(img, button.pos, (x + w, y + h), HOVER, cv2.FILLED)
-                    cv2.putText(img, button.text, (x + 18, y + 70), FONT_FAMILY, 4, FONT_COLOR, 4)
-                    length, info, img = detector.findDistance(lmList[8], lmList[12], img)
+                    cv2.rectangle(img, button.pos,
+                                  (x + w, y + h), HOVER, cv2.FILLED)
+                    cv2.putText(img, button.text, (x + 18, y + 70),
+                                FONT_FAMILY, 4, FONT_COLOR, 4)
+                    length, info, img = detector.findDistance(
+                        lmList[8], lmList[12], img)
 
-                    # clicked
+                    # Detect if user clicked,
+                    # TODO: create a function if_clicked
                     if length < CLICK_SIZE:
+                        # if an app (e.g. notepad) is open the numbers will typed in the app.
                         keyboard.press(button.text)
-                        print(length)
-                        cv2.rectangle(img, button.pos, (x + w, y + h), KEY_DIVIDER, cv2.FILLED)
-                        cv2.putText(img, button.text, (x + 18, y + 70), FONT_FAMILY, 4, FONT_COLOR, 4)
+                        print("Click Size= ",length)
+                        cv2.rectangle(img, button.pos,
+                                      (x + w, y + h), KEY_DIVIDER, cv2.FILLED)
+                        cv2.putText(img, button.text, (x + 18, y + 70),
+                                    FONT_FAMILY, 4, FONT_COLOR, 4)
                         finalText += button.text
                         sleep(0.5)
 
+    # below textbox
     cv2.rectangle(img, (50, 350), (600, 450), HOVER, cv2.FILLED)
     cv2.putText(img, finalText, (60, 425), FONT_FAMILY, 4, FONT_COLOR, 4)
 
