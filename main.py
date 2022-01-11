@@ -16,8 +16,8 @@ DEFAULT_WEBCAM = 0
 XSPLIT_WEBCAM = 1
 IRIUN_WEBCAM = 2
 
-frame_width = 1280
-frame_height = 720
+FRAME_WIDTH = 1280
+FRAME_HEIGHT = 720
 
 # COLORS
 YELLOW = (0, 255, 255)
@@ -33,15 +33,12 @@ FONT_FAMILY = cv2.FONT_HERSHEY_PLAIN
 KEY_COLOR = YELLOW
 HOVER = DARK_YELLOW
 KEY_DIVIDER = GREEN
-CLICK_SIZE = 20
+CLICK_SIZE = 35
 
-cap = cv2.VideoCapture(IRIUN_WEBCAM)
-# cap.set(3, frame_width)    # width
-# cap.set(4, frame_height)     # height
-print(F"Width =  {cap.get(3)}")
-print(F"Height =  {cap.get(4)}")
 
-dim = (frame_width, frame_height)
+cap = cv2.VideoCapture(IRIUN_WEBCAM, cv2.CAP_DSHOW)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, FRAME_WIDTH)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
 
 detector = HandDetector(detectionCon=0.8)
 keys = [["7", "8", "9"], ["4", "5", "6"], ["1", "2", "3"]]
@@ -62,11 +59,13 @@ class Button():
 
 # Position of numbers on the image
 buttonList = []
-base_loc = 300
+base_x_loc = 800
+base_y_loc = 250
 for x in range(0, 3):
-    buttonList.append(Button([base_loc + x * 90 + 50, 20], keys[0][x]))
-    buttonList.append(Button([base_loc + x * 90 + 50, 110], keys[1][x]))
-    buttonList.append(Button([base_loc + x * 90 + 50, 200], keys[2][x]))
+    buttonList.append(Button([base_x_loc + x * 90 + 50, base_y_loc], keys[0][x]))
+    buttonList.append(Button([base_x_loc + x * 90 + 50, base_y_loc + 90], keys[1][x]))
+    buttonList.append(Button([base_x_loc + x * 90 + 50, base_y_loc + 180], keys[2][x]))
+
 
 
 def drawAll(img, buttonList):
@@ -112,14 +111,15 @@ while True:
                         print(F"{button.text} & Click Size= {length}")
                         cv2.rectangle(img, button.pos,
                                       (x + w, y + h), KEY_DIVIDER, cv2.FILLED)
+
                         cv2.putText(img, button.text, (x + 18, y + 70),
                                     FONT_FAMILY, 4, FONT_COLOR, 4)
                         finalText += button.text
-                        sleep(0.5)
+                        sleep(0.55)
 
     # below textbox
-    cv2.rectangle(img, (50, 350), (600, 450), HOVER, cv2.FILLED)
-    cv2.putText(img, finalText, (60, 425), FONT_FAMILY, 4, FONT_COLOR, 4)
+    cv2.rectangle(img, (50, 550), (800, 650), HOVER, cv2.FILLED)
+    cv2.putText(img, finalText, (60, 600), FONT_FAMILY, 4, FONT_COLOR, 4)
 
-    cv2.imshow("Image", img)
+    cv2.imshow("Virtual Keyboard", img)
     cv2.waitKey(1)

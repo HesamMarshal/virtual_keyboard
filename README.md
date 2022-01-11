@@ -3,8 +3,8 @@ It draws numbers 1 to 9 as buttons on the screen. This app utilizes computer vis
 I am open to any suggestions and changes in the app.
 
 ## install:
-1. mediapipe 0.8.7
-2. cvzone version 1.5.3
+1. mediapipe version: 0.8.7
+2. cvzone version: 1.5.3
 
 
 
