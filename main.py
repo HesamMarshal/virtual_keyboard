@@ -33,7 +33,7 @@ FONT_FAMILY = cv2.FONT_HERSHEY_PLAIN
 KEY_COLOR = YELLOW
 HOVER = DARK_YELLOW
 KEY_DIVIDER = GREEN
-CLICK_SIZE = 35
+CLICK_SIZE = 40
 
 
 cap = cv2.VideoCapture(IRIUN_WEBCAM, cv2.CAP_DSHOW)
@@ -79,7 +79,7 @@ def drawAll(img, buttonList):
                     cv2.FONT_HERSHEY_PLAIN, 4, FONT_COLOR, 4)
     return img
 
-
+click_released = True
 while True:
     success, img = cap.read()
 
@@ -103,19 +103,24 @@ while True:
                     length, info, img = detector.findDistance(
                         lmList[8], lmList[12], img)
 
+                    if length > CLICK_SIZE:
+                        click_released =True
                     # Detect if user clicked,
                     # TODO: create a function if_clicked
                     if length < CLICK_SIZE:
                         # if an app (e.g. notepad) is open the numbers will typed in the app.
                         keyboard.press(button.text)
-                        print(F"{button.text} & Click Size= {length}")
+
                         cv2.rectangle(img, button.pos,
                                       (x + w, y + h), KEY_DIVIDER, cv2.FILLED)
 
                         cv2.putText(img, button.text, (x + 18, y + 70),
                                     FONT_FAMILY, 4, FONT_COLOR, 4)
-                        finalText += button.text
-                        sleep(0.55)
+                        if click_released:
+                            print(F"{button.text} & Click Size= {length}")
+                            finalText += button.text
+                            click_released = False
+                        # sleep(0.55)
 
     # below textbox
     cv2.rectangle(img, (50, 550), (800, 650), HOVER, cv2.FILLED)
