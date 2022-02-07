@@ -12,15 +12,22 @@ I am open to any suggestions and changes in the app.
 ## Runtime
 * webcam: 
   * if you want to use your laptop webcame change the line:
-    * cap = cv2.VideoCapture(IRIUN_WEBCAM, cv2.CAP_DSHOW) to
-    * cap = cv2.VideoCapture(DEFAULT_WEBCAM, cv2.CAP_DSHOW)
+    ``` python
+    cap = cv2.VideoCapture(IRIUN_WEBCAM, cv2.CAP_DSHOW) 
+    ```
+    to
+    ``` python
+    cap = cv2.VideoCapture(DEFAULT_WEBCAM, cv2.CAP_DSHOW)
+    ```
   * I used Iriun app to turn my phone camera to the webcam. Also it is possible to use XSPLIT app.
 
 * Click Detection:
   * You can adjust the click precision by modifying the CLICK_SIZE = 45 
     * If it does not detect your click increase the number e.g 60 and 70 
     * If it detects too much decrease the number e.g. 30 or 25
-    
 
+
+# Screenshot
+![ScreenShot](./screenshots/virtual_keyboard.png?raw=true "Title")
 
 
