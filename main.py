@@ -48,8 +48,9 @@ keyboard = Controller()
 
 
 class Button():
-    def __init__(self, pos, text, size=[85, 85]):
+    def __init__(self, pos, text, size=[85, 85], is_alpha_num=True):
         self.pos = pos
+        self.is_alpha_num = is_alpha_num
         self.text = text
         self.size = size
 
@@ -66,6 +67,10 @@ for x in range(0, 3):
     buttonList.append(Button([base_x_loc + x * 90 + 50, base_y_loc + 90], keys[1][x]))
     buttonList.append(Button([base_x_loc + x * 90 + 50, base_y_loc + 180], keys[2][x]))
 
+buttonList.append(Button([100, 200], 'Exit', size=[160, 85], is_alpha_num=False))
+buttonList.append(Button([100, 300], 'Clear', size=[200, 85], is_alpha_num=False))
+# buttonList.append(Button([100, 400], 'Del', size=[200, 85], is_alpha_num=False))
+
 
 
 def drawAll(img, buttonList):
@@ -78,9 +83,10 @@ def drawAll(img, buttonList):
         cv2.putText(img, button.text, (x + 18, y + 70),
                     cv2.FONT_HERSHEY_PLAIN, 4, FONT_COLOR, 4)
     return img
-
+exit_pressed = False
 click_released = True
-while True:
+print('CLICK_SIZE : ', CLICK_SIZE)
+while not exit_pressed:
     success, img = cap.read()
 
     # to detect the hand and fingers
@@ -109,8 +115,12 @@ while True:
                     # TODO: create a function if_clicked
                     if length < CLICK_SIZE:
                         # if an app (e.g. notepad) is open the numbers will typed in the app.
-                        keyboard.press(button.text)
-
+                        if button.is_alpha_num:
+                            keyboard.press(button.text)
+                        elif button.text == 'Exit':
+                            exit_pressed = True
+                        elif button.text == 'Clear':
+                            finalText = ''
                         cv2.rectangle(img, button.pos,
                                       (x + w, y + h), KEY_DIVIDER, cv2.FILLED)
 
@@ -118,7 +128,8 @@ while True:
                                     FONT_FAMILY, 4, FONT_COLOR, 4)
                         if click_released:
                             print(F"{button.text} & Click Size= {length}")
-                            finalText += button.text
+                            if button.is_alpha_num:
+                                finalText += button.text
                             click_released = False
                         # sleep(0.55)
 
