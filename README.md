@@ -8,21 +8,29 @@ I am open to any suggestions and changes in the app.
 ## install:
 1. mediapipe version: 0.8.7
 2. cvzone version: 1.5.3
+3. cv2 version: 4.5.3
 
-## Runtime
-* webcam: 
-  * if you want to use your laptop webcame change the line:
+## Runtime 
+* webcam: I used **Iriun** app to turn my phone camera to the webcam.
+  * if you want to use your laptop webcam: in __constant.py__ change the line:
     ``` python
-    cap = cv2.VideoCapture(IRIUN_WEBCAM, cv2.CAP_DSHOW) 
+    WEBCAM = IRIUN_WEBCAM
     ```
     to
     ``` python
-    cap = cv2.VideoCapture(DEFAULT_WEBCAM, cv2.CAP_DSHOW)
+    WEBCAM = DEFAULT_WEBCAM
     ```
-  * I used Iriun app to turn my phone camera to the webcam. Also it is possible to use XSPLIT app.
-
+  * Also it is possible to use XSPLIT app. 
+    To Use XSPLIT in __constant.py__ change the line:
+    ``` python
+    WEBCAM = IRIUN_WEBCAM
+    ```
+    to
+    ``` python
+    WEBCAM = XSPLIT_WEBCAM
+    ```
 * Click Detection:
-  * You can adjust the click precision by modifying the CLICK_SIZE = 45 
+  * You can adjust the click precision by modifying the CLICK_SIZE = 45 in the constant.py file.
     * If it does not detect your click increase the number e.g 60 and 70 
     * If it detects too much decrease the number e.g. 30 or 25
 

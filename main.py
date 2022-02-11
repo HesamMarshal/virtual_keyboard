@@ -5,40 +5,25 @@
 
 import cv2  # version 4.5.3
 from cvzone.HandTrackingModule import HandDetector
-from time import sleep
 import cvzone
 from pynput.keyboard import Controller
+import constant
 
 print('cv2.version:', cv2.__version__)
 
-# CONSTS
-DEFAULT_WEBCAM = 0
-XSPLIT_WEBCAM = 1
-IRIUN_WEBCAM = 2
-
-FRAME_WIDTH = 1280
-FRAME_HEIGHT = 720
-
-# COLORS
-YELLOW = (0, 255, 255)
-DARK_YELLOW = (0, 175, 175)
-PURPLE = (255, 0, 255)
-WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
-BLACK = (0, 0, 0)
-
 # CONFIG
-FONT_COLOR = BLACK
 FONT_FAMILY = cv2.FONT_HERSHEY_PLAIN
-KEY_COLOR = YELLOW
-HOVER = DARK_YELLOW
-KEY_DIVIDER = GREEN
-CLICK_SIZE = 45
 
+FONT_COLOR = constant.BLACK
+KEY_COLOR = constant.YELLOW
+HOVER = constant.DARK_YELLOW
+KEY_DIVIDER = constant.GREEN
 
-cap = cv2.VideoCapture(IRIUN_WEBCAM, cv2.CAP_DSHOW)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, FRAME_WIDTH)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
+CLICK_SIZE = constant.CLICK_SIZE
+
+cap = cv2.VideoCapture(constant.WEBCAM, cv2.CAP_DSHOW)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, constant.FRAME_WIDTH)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, constant.FRAME_HEIGHT)
 
 detector = HandDetector(detectionCon=0.8)
 keys = [["7", "8", "9"], ["4", "5", "6"], ["1", "2", "3"]]
@@ -83,6 +68,7 @@ def drawAll(img, buttonList):
         cv2.putText(img, button.text, (x + 18, y + 70),
                     cv2.FONT_HERSHEY_PLAIN, 4, FONT_COLOR, 4)
     return img
+
 exit_pressed = False
 click_released = True
 print('CLICK_SIZE : ', CLICK_SIZE)
